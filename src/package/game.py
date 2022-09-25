@@ -7,24 +7,25 @@ from package.environment import Background
 from package.player import Player
 
 class Game:
-    def __init__(self, SCREEN, SCALEX, SCALEY, background_image,  menu_background):
+    def __init__(self, SCREEN, SCALEX, SCALEY, background_image,  menu_background, sounds=None):
         self.state = "menu"
         self.SCREEN = SCREEN
-        self.size = (SCREEN.get_width(), SCREEN.get_height())
+        self.size = SCREEN.get_width()
         self.menu_img = menu_background
         self.background_image = background_image
         self.button = Text(SCREEN, "font\ARCADECLASSIC.TTF", 30)
-        self.enemy = Enemy(SCREEN, SCALEX, SCALEY, 900)
-        self.player = Player(SCREEN, SCALEX, SCALEY)
-        self.vulture = Vulture(SCREEN, SCALEX, SCALEY)
+        self.enemy = Enemy(SCALEX, SCALEY, 900)
+        self.player = Player(SCALEX, SCALEY, sounds[0])
+        self.vulture = Vulture(self.size, SCALEX, SCALEY)
         self.bg = Background(SCREEN, background_image)
-        self.player_group = pygame.sprite.GroupSingle()
+        self.player_sprite = pygame.sprite.GroupSingle()
         self.enemy_group = pygame.sprite.Group()
-        self.player_group.add(self.player)
+        self.reset = False
+        self.score = 1
+        self.sounds = sounds
+        self.player_sprite.add(self.player)
         self.enemy_group.add(self.enemy)
         self.enemy_group.add(self.vulture)
-        self.reset = False
-        self.score = 0
 
     def menu(self):
         self.SCREEN.blit(self.menu_img, (0, 0))
@@ -37,18 +38,19 @@ class Game:
 
     def main_game(self):
         self.bg.scroll_background()
-        self.player_group.draw(self.SCREEN)
+        self.player_sprite.draw(self.SCREEN)
         self.enemy_group.draw(self.SCREEN)
         self.enemy_group.update()
-        self.player_group.update()
-        # self.button.labels(f"obj   count {len(self.enemy_group)}", (250, 10))
+        self.player_sprite.update()
         if (len(self.enemy_group) < 2):
             if random.randint(0, 1) == 0:
-                new_pos = random.randrange(self.size[0], self.size[0]+159, 5)
-                self.enemy_group.add(Enemy(self.SCREEN, 60, 60, new_pos+220))
+                new_pos = random.randrange(self.size, self.size+159, 5)
+                self.enemy_group.add(Enemy(60, 60, new_pos+220))
             else:
-                self.enemy_group.add(Vulture(self.SCREEN, 60, 60))
-        if pygame.sprite.spritecollide(self.player, self.enemy_group, False, pygame.sprite.collide_mask):
+                self.enemy_group.add(Vulture(self.size, 60, 60))
+        # if pygame.sprite.spritecollide(self.player, self.enemy_group, False, pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollideany(self.player, self.enemy_group, pygame.sprite.collide_mask):
+            self.sounds[2].play()
             self.state = "game_end"
             # pass
         self.display_score()
@@ -59,24 +61,26 @@ class Game:
         pygame.display.flip()
 
     def end_game(self):
-        self.button.labels("pree any key to restart!", self.SCREEN.get_rect().center)
+        self.button.labels("pree  any  key  to  restart!", self.SCREEN.get_rect().center)
         if self.reset:
+            self.sounds[2].stop()
             self.restart()
         pygame.display.flip()
 
     def restart(self):
-        self.__init__(self.SCREEN, 60, 60, self.background_image, self.menu_img)
+        self.__init__(self.SCREEN, 60, 60, self.background_image, self.menu_img, self.sounds)
         self.state = "main_game"
     
     def display_score(self):
-        self.score += 0.2
-        self.button.labels(f"{int(self.score)}", (30, 10))
-        if self.score % 100 == 0:
-            self.enemy.game_speed += 1
+        self.score += 0.5
+        self.button.labels(f"{int(self.score)}", (760, 20))
+        if (self.score % 100 == 0):
+            self.sounds[1].play()
+            self.enemy.game_speed += 1.2
             self.vulture.game_speed += 1
             self.bg.game_speed += 1
 
-    def run(self):
+    def gameloop(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

@@ -1,7 +1,7 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, display_surf, scalex, scaley):
+    def __init__(self,scalex, scaley, jump_sound):
         pygame.sprite.Sprite.__init__(self)
         self.pos_x = 62
         self.pos_y = 329
@@ -17,17 +17,18 @@ class Player(pygame.sprite.Sprite):
         self.is_running = True
         self.is_jumping = False
         self.is_sliding = False
+        self.jump_sound = jump_sound
         self.image = self.run_sprites[int(self.current_run_sprite)]
         self.rect = self.image.get_rect(center=(62, 329))
         self.mask = pygame.mask.from_surface(self.image)
-        self.SCREEN = display_surf
 
     def update(self):
         self.mask = pygame.mask.from_surface(self.image)
         self.animation()
         self.jump()
         self.slide()
-        # pygame.draw.rect(self.SCREEN, (0, 0, 0), self.rect, 2)
+        # pygame.draw.line(self.SCREEN, (0, 0, 0), (self.rect[0], self.rect[1]), (800, self.rect[1]))
+        # pygame.draw.line(self.SCREEN, (0, 0, 0), (self.rect[0], self.rect[1]+58), (800, self.rect[1]+58))
 
     def animation(self):
         if self.is_jumping:
@@ -62,6 +63,7 @@ class Player(pygame.sprite.Sprite):
         key_pressed = pygame.key.get_pressed()
         if (key_pressed[pygame.K_SPACE]) and (not self.is_jumping):
             self.is_running, self.is_jumping = False, True
+            self.jump_sound.play()
         if self.is_jumping:
             self.rect.y -= self.vel_y
             self.vel_y -= self.gravity

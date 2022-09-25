@@ -13,19 +13,20 @@ FPS = 30
 background_image = pygame.image.load("environment/background (3).jpg")
 background_image = pygame.transform.scale(background_image, (WIDTH, 400))
 
-
 menu_img = pygame.image.load("environment\menu_img.jpg")
 menu_img =  pygame.transform.scale(menu_img, (WIDTH, 400))
 
 icon_img = pygame.image.load("player/Run/Run (1).png")
 pygame.display.set_icon(icon_img)
 
-# background_music = pygame.mixer.Sound()
-# jump_sound = pygame.mixer.Sound()
-# score_sound = pygame.mixer.Sound()
-# game_end_sound = pygame.mixer.Sound()
-
-game_stage = Game(SCREEN, SCALEX, SCALEY, background_image, menu_img)
+pygame.mixer.pre_init(44100, -16, 2, 512)
+jump_sound = pygame.mixer.Sound("sounds\jump.wav")
+jump_sound.set_volume(0.2)
+score_sound = pygame.mixer.Sound("sounds\milestone.wav")
+score_sound.set_volume(0.2)
+gameover = pygame.mixer.Sound("sounds\gameover.wav")
+gameover.set_volume(0.2)
+game_stage = Game(SCREEN, SCALEX, SCALEY, background_image, menu_img, sounds=(jump_sound, score_sound, gameover))
 
 def main():
     while True:
@@ -43,8 +44,7 @@ def main():
         #         if (game_stage.state == "game_end"):
         #             game_stage.state = "restart"
         # game_stage.state_manager()
-        
-        game_stage.run()
+        game_stage.gameloop()
         
         fps.tick(30)
 

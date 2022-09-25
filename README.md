@@ -17,5 +17,14 @@
 - install python requirements by doing `pip install -r requirement.txt`
 - then run `python src\main.py`
 
+## Controls
+| Keys  | Description           |
+|----   | ----                  |
+| S     | Slide                 |
+| SPACE | Jump                  |
+| P     | Pause                 |
+| ESP   | Open help/Menu screen |
+
+
 ## License
 [MIT](https://opensource.org/licenses/MIT)
