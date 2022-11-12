@@ -1,5 +1,5 @@
-# Run4Fun
- Run4Fun is knock off version of chrome t-rex game created using Pygame library.
+# Infinite Runner
+ Infinite Runner is knock off version of chrome t-rex game created using Pygame library.
 ***
 ## Preview
 - ### Menu Screen
