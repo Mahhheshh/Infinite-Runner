@@ -1,4 +1,3 @@
-import pygame
 from math import ceil
 
 class Background:

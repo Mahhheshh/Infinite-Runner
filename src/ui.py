@@ -1,6 +1,6 @@
 import pygame
 class Text:
-    def __init__(self, surf,file_name, size):
+    def __init__(self, surf, file_name, size):
         pygame.init()
         self.text = pygame.font.Font(file_name, size)
         self.SCREEN = surf
@@ -16,6 +16,3 @@ class Text:
         render_surf = self.text.render(str(value), True, "Black")
         render_rect = render_surf.get_rect(center=dest)
         self.SCREEN.blit(render_surf, render_rect)
-
-
-    

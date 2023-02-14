@@ -5,9 +5,9 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.pos_x = 62
         self.pos_y = 329
-        self.run_sprites = [pygame.transform.scale(pygame.image.load(f"player/Run/Run ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 9)]
-        self.jump_sprites = [pygame.transform.scale(pygame.image.load(f"player/Jump/Jump ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 13)]
-        self.slide_sprites = [pygame.transform.scale(pygame.image.load(f"player/Slide/Slide ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 6)]
+        self.run_sprites = [pygame.transform.scale(pygame.image.load(f"src/player/Run/Run ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 9)]
+        self.jump_sprites = [pygame.transform.scale(pygame.image.load(f"src/player/Jump/Jump ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 13)]
+        self.slide_sprites = [pygame.transform.scale(pygame.image.load(f"src/player/Slide/Slide ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 6)]
         self.current_run_sprite = 0
         self.current_jump_sprite = 0
         self.current_slide_sprite = 0
@@ -27,8 +27,6 @@ class Player(pygame.sprite.Sprite):
         self.animation()
         self.jump()
         self.slide()
-        # pygame.draw.line(self.SCREEN, (0, 0, 0), (self.rect[0], self.rect[1]), (800, self.rect[1]))
-        # pygame.draw.line(self.SCREEN, (0, 0, 0), (self.rect[0], self.rect[1]+58), (800, self.rect[1]+58))
 
     def animation(self):
         if self.is_jumping:
@@ -71,7 +69,6 @@ class Player(pygame.sprite.Sprite):
                 self.is_jumping, self.is_sliding = False, False
                 self.is_running = True
                 self.vel_y = self.jump_height
-        # self.is_running = True
     
     def slide(self):
         if (pygame.key.get_pressed()[pygame.K_s]) or (pygame.key.get_pressed()[pygame.K_DOWN]):

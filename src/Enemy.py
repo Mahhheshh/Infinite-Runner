@@ -6,7 +6,7 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = 320
-        self.hyena_sprites = [pygame.transform.scale(pygame.image.load(f"environment/enemy/enemy ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 7)]
+        self.hyena_sprites = [pygame.transform.scale(pygame.image.load(f"src/environment/enemy/enemy ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 7)]
         self.current_hyena_sprite = 0
         self.image = self.hyena_sprites[int(self.current_hyena_sprite)]
         self.mask = pygame.mask.from_surface(self.image)
@@ -32,7 +32,7 @@ class Vulture(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = width+60
         self.y = random.randrange(301, 345)
-        self.vulcture_sprites = [pygame.transform.scale(pygame.image.load(f"environment/vulture/vulture ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 5)]
+        self.vulcture_sprites = [pygame.transform.scale(pygame.image.load(f"src/environment/vulture/vulture ({i}).png").convert_alpha(), (scalex, scaley)) for i in range(1, 5)]
         self.current_vulcture_sprite = 0
         self.game_speed = 8
         self.image = self.vulcture_sprites[(int(self.current_vulcture_sprite))]

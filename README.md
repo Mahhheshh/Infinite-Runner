@@ -15,7 +15,7 @@
 ## installation:
 - clone repo locally using git clone `https://github.com/Mahhheshh/Run4Fun.git`
 - install python requirements by doing `pip install -r requirement.txt`
-- then run `python src\main.py`
+- then run `python main.py`
 
 ## Controls
 | Keys  | Description           |

@@ -1,10 +1,11 @@
 import pygame 
 import sys
 import random
-from package.ui import Text
-from package.Enemy import Enemy, Vulture
-from package.environment import Background
-from package.player import Player
+from .ui import Text
+from .Enemy import Enemy, Vulture
+from .environment import Background
+from .player import Player
+from pathlib import Path
 
 class Game:
     def __init__(self, SCREEN, SCALEX, SCALEY, background_image,  menu_background, sounds=None):
@@ -13,7 +14,7 @@ class Game:
         self.size = SCREEN.get_width()
         self.menu_img = menu_background
         self.background_image = background_image
-        self.button = Text(SCREEN, "font\ARCADECLASSIC.TTF", 30)
+        self.button = Text(SCREEN, "src/font/ARCADECLASSIC.TTF", 30)
         self.enemy = Enemy(SCALEX, SCALEY, 900)
         self.player = Player(SCALEX, SCALEY, sounds[0])
         self.vulture = Vulture(self.size, SCALEX, SCALEY)
@@ -21,7 +22,7 @@ class Game:
         self.player_sprite = pygame.sprite.GroupSingle()
         self.enemy_group = pygame.sprite.Group()
         self.reset = False
-        self.score = 1
+        self.score = 0
         self.sounds = sounds
         self.player_sprite.add(self.player)
         self.enemy_group.add(self.enemy)
@@ -52,7 +53,6 @@ class Game:
         if pygame.sprite.spritecollideany(self.player, self.enemy_group, pygame.sprite.collide_mask):
             self.sounds[2].play()
             self.state = "game_end"
-            # pass
         self.display_score()
         pygame.display.flip()
 
@@ -94,6 +94,7 @@ class Game:
                     self.state = "main_game"
                 if (self.state == "game_end"):
                     self.reset = True
+        # fps
         self.state_manager()
 
     def state_manager(self):
